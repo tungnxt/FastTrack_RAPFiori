@@ -19,13 +19,12 @@ CLASS zcl_booking_data_gen IMPLEMENTATION.
     "============================================================
     " 1) CUSTOMERS — MODIFY (insert nếu mới, update nếu đã có)
     "============================================================
-*    MODIFY zrap_customer FROM TABLE @( VALUE #(
-*      ( customer_id = 'C001' customer_name = 'Acme Corp'   email = 'sales@acme.example'   city = 'Hanoi' )
-*      ( customer_id = 'C002' customer_name = 'Globex Ltd'  email = 'info@globex.example'  city = 'Da Nang' )
-*      ( customer_id = 'C003' customer_name = 'Initech JSC' email = 'hello@initech.example' city = 'HCMC' )
-*    ) ).
-*    out->write( |Customers modified: { sy-dbcnt } rows| ).
-
+   MODIFY zcustomer_fs01 FROM TABLE @( VALUE #(
+      ( customer_id = 'C001' customer_name = 'Acme Corp'   email = 'sales@acme.example'   city = 'Hanoi' )
+      ( customer_id = 'C002' customer_name = 'Globex Ltd'  email = 'info@globex.example'  city = 'Da Nang' )
+      ( customer_id = 'C003' customer_name = 'Initech JSC' email = 'hello@initech.example' city = 'HCMC' ) ) ).
+    out->write( |Customers modified: { sy-dbcnt } rows| ).
+*
     "============================================================
     " 2) BOOKINGS (header) — MODIFY
     "============================================================

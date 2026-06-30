@@ -19,3 +19,4 @@ define view entity zi_bkitem_fs01
       local_last_changed_at as LocalLastChangedAt,
       _bookingHeader
 }
+    

@@ -1,6 +1,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Projection Booking'
 @Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
 define root view entity ZC_BOOKING_FS01
   provider contract transactional_query
   as projection on zi_booking_fs01
@@ -15,5 +16,6 @@ define root view entity ZC_BOOKING_FS01
       OverallStatus,
 
       /* Associations */
-      _bookingItem
+      _bookingItem: redirected to composition child ZC_BKITEM_FS01,
+      _customer
 }

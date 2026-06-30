@@ -1,0 +1,35 @@
+@Metadata.layer: #CORE
+annotate entity ZC_BKITEM_FS01
+    with 
+{
+  @EndUserText.label: 'Item'
+  @UI.lineItem:       [{ position: 10, importance: #HIGH }]
+  @UI.identification: [{ position: 10 }]
+  ItemId;
+
+  @EndUserText.label: 'Product'
+  @UI.lineItem:       [{ position: 20, importance: #HIGH }]
+  @UI.identification: [{ position: 20 }]
+  ProductId;
+
+  @EndUserText.label: 'Quantity'
+  @UI.lineItem:       [{ position: 30 }]
+  @UI.identification: [{ position: 30 }]
+  Quantity;
+
+  @UI.lineItem:       [{ position: 40 }]
+  @UI.identification: [{ position: 40 }]
+  QuantityUnit;
+
+  @EndUserText.label: 'Item Price'
+  @UI.lineItem:       [{ position: 50 }]
+  @UI.identification: [{ position: 50 }]
+  ItemPrice;
+
+  @UI.lineItem:       [{ position: 60 }]
+  @UI.identification: [{ position: 60 }]
+  CurrencyCode;
+
+
+    
+}
