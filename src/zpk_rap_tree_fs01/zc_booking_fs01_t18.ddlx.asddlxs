@@ -1,0 +1,5 @@
+@Metadata.layer: #CORE
+@UI.selectionVariant: [{ qualifier: 'ViewList', text: 'Bookings' }]
+annotate entity ZC_BOOKING_FS01 with
+{
+}

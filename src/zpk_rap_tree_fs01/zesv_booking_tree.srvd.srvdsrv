@@ -1,0 +1,5 @@
+extend service ZSV_BOOKING with {
+  expose ZC_BOOKINGNODE_FS01 as ZZBookingTree;
+  expose ZC_BOOKNODETF_FS01  as ZZBookingTreeTF;
+  expose ZCE_NODECHILD_FS01  as ZZNodeChild;
+}

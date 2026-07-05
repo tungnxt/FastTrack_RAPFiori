@@ -1,4 +1,5 @@
 @EndUserText.label: 'Service Def'
+@AbapCatalog.extensibility.extensible: true
 define service ZSV_Booking {
   expose ZC_BKITEM_FS01  as BookingItemSrv;
   expose ZC_BOOKING_FS01 as BookingSrv;

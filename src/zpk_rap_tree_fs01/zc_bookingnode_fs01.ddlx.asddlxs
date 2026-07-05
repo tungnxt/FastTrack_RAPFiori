@@ -1,0 +1,9 @@
+@Metadata.layer: #CORE
+@UI.presentationVariant: [{ sortOrder:      [{ by: 'NodeId', direction: #ASC }],
+                              visualizations: [{ type: #AS_LINEITEM }] }]
+@UI.selectionVariant: [{ qualifier: 'ViewTree', text: 'Tree' }]
+annotate entity ZC_BOOKINGNODE_FS01 with
+{
+  @UI.hidden: true
+  NodeId;
+}
