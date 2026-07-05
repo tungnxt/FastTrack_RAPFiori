@@ -1,0 +1,33 @@
+{
+  "generationParameters": {
+    "generationDate": "Sun Jul 05 2026 14:41:55 GMT+0000 (Coordinated Universal Time)",
+    "generatorPlatform": "SAP Business Application Studio",
+    "serviceType": "SAP System (ABAP Cloud)",
+    "metadataFilename": "",
+    "serviceUrl": "https://bb8534dd-13b7-4042-bba9-41728e5288ac.abap.us10.hana.ondemand.com/sap/opu/odata4/sap/zui_booking_v4/srvd/sap/zsv_booking/0001/",
+    "appName": "fasttrackbooking",
+    "appTitle": "Booking Application",
+    "appDescription": "An Application For Booking ",
+    "appNamespace": "",
+    "ui5Theme": "sap_horizon",
+    "ui5Version": "1.145.3",
+    "enableEslint": true,
+    "enableTypeScript": false,
+    "showMockDataInfo": true,
+    "generatorVersion": "1.27.0",
+    "template": "List Report Page V4",
+    "generatorName": "SAP Fiori Application Generator",
+    "entityRelatedConfig": [
+      {
+        "type": "Main Entity",
+        "value": "BookingSrv"
+      },
+      {
+        "type": "Navigation Entity",
+        "value": "_bookingItem"
+      }
+    ],
+    "launchText": "To launch the generated application, run the following from the generated application root folder:\n\n```\n    npm start\n```",
+    "valueHelpDownloaded": true
+  }
+}
