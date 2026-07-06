@@ -186,8 +186,11 @@ App LROP (List Report Object Page) OData V4, template `sap.fe.templates`.
 **Frontend:** trong `FE/` chạy `npm install` rồi `npm start` (UI5 tooling), hoặc deploy lên ABAP repository. App trỏ service `/sap/opu/odata4/sap/zui_booking_v4/srvd/sap/zsv_booking/0001/`.
 
 ---
+## 7. App Preview
 
-## 7. Tài liệu tham khảo
+
+---
+## 8. Tài liệu tham khảo
 
 **SAP chính thức**
 - Fiori Elements OData V4: <https://ui5.sap.com/#/topic/03265b0408e2432c9571d6b3feb6b1fd>
