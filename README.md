@@ -70,6 +70,19 @@ Toàn bộ phần cây tách riêng để không đụng base model.
 | `ZC_BOOKING_FS01_T18` | MDE | `@UI.selectionVariant` cho tab List (multi-view) |
 | `ZESV_BOOKING_TREE` | **Service Extension** | `extend service ZSV_BOOKING` → expose `ZZBookingTree`, `ZZBookingTreeTF`, `ZZNodeChild` |
 
+### 2.2b Sub-package `zpk_rap_unmanaged_fs01` (Save Options — Buổi 5)
+
+Package độc lập dạy **4 save option** của RAP trên cùng 1 entity **Travel** (root standalone, **không draft**, không composition). Tách hẳn khỏi Booking read-only. Tài liệu giảng dạy: `03.FastTrack_RAPFiori/RAP-Buoi5/buoi5.md`.
+
+| Pattern | Table | CDS root / BDEF | Behavior pool | Đặc trưng |
+|---|---|---|---|---|
+| Managed (baseline) | `ZTRAVEL_MG_FS01` | `ZI_TRAVEL_MG_FS01` | `ZBP_I_TRAVEL_MG_FS01` | `persistent table` — framework tự lưu |
+| Additional Save | `ZTRAVEL_AS_FS01` + `ZTRAVEL_LOG_FS01` | `ZI_TRAVEL_AS_FS01` | `ZBP_I_TRAVEL_AS_FS01` | `with additional save` — framework lưu chính, `save_modified` ghi thêm log |
+| Unmanaged Save | `ZTRAVEL_US_FS01` | `ZI_TRAVEL_US_FS01` | `ZBP_I_TRAVEL_US_FS01` | `with unmanaged save` — tự persist + delegate sang BO managed qua EML |
+| Unmanaged | `ZTRAVEL_UM_FS01` | `ZI_TRAVEL_UM_FS01` | `ZBP_I_TRAVEL_UM_FS01` | `unmanaged implementation` — tự viết CRUD/read/lock + `save_modified` |
+
+Service chung: **`ZSV_TRAVEL_SAVE_FS01`** (expose 4 root: `TravelMG/TravelAS/TravelUS/TravelUM`) → binding OData V4 UI **`ZUI_TRAVEL_SAVE_O4_FS01`** (tạo & publish trong ADT).
+
 ### 2.3 Data model
 
 ```

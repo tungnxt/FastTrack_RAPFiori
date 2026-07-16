@@ -1,0 +1,16 @@
+﻿unmanaged implementation in class ZBP_I_TRAVEL_UM_FS01 unique;
+strict ( 2 );
+
+define behavior for ZI_TRAVEL_UM_FS01 alias Travel
+lock master
+authorization master ( global )
+etag master LocalLastChangedAt
+{
+  field ( mandatory : create, readonly : update ) TravelId;
+  field ( mandatory ) AgencyId, CustomerId;
+  field ( readonly ) CreatedBy, CreatedAt, LastChangedBy, LastChangedAt, LocalLastChangedAt;
+
+  create;
+  update;
+  delete;
+}

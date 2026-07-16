@@ -1,0 +1,9 @@
+﻿CLASS zbp_i_travel_um_fs01 DEFINITION
+  PUBLIC
+  ABSTRACT
+  FINAL
+  FOR BEHAVIOR OF zi_travel_um_fs01.
+ENDCLASS.
+
+CLASS zbp_i_travel_um_fs01 IMPLEMENTATION.
+ENDCLASS.

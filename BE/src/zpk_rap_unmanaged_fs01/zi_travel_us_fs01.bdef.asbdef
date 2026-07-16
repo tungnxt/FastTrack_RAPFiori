@@ -1,0 +1,36 @@
+﻿managed implementation in class ZBP_I_TRAVEL_US_FS01 unique;
+strict ( 2 );
+
+define behavior for ZI_TRAVEL_US_FS01 alias Travel
+// no 'persistent table' -> framework does NOT auto-save; we persist in save_modified
+lock master
+authorization master ( global )
+etag master LocalLastChangedAt
+with unmanaged save
+{
+  field ( mandatory : create, readonly : update ) TravelId;
+  field ( mandatory ) AgencyId, CustomerId;
+  field ( readonly ) CreatedBy, CreatedAt, LastChangedBy, LastChangedAt, LocalLastChangedAt;
+
+  create;
+  update;
+  delete;
+
+  mapping for ztravel_us_fs01 corresponding
+  {
+    TravelId      = TRAVEL_ID;
+    AgencyId      = AGENCY_ID;
+    CustomerId    = CUSTOMER_ID;
+    BeginDate     = BEGIN_DATE;
+    EndDate       = END_DATE;
+    Description   = DESCRIPTION;
+    TotalPrice    = TOTAL_PRICE;
+    CurrencyCode  = CURRENCY_CODE;
+    OverallStatus = OVERALL_STATUS;
+    CreatedBy          = CREATED_BY;
+    CreatedAt          = CREATED_AT;
+    LastChangedBy      = LAST_CHANGED_BY;
+    LastChangedAt      = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+}
