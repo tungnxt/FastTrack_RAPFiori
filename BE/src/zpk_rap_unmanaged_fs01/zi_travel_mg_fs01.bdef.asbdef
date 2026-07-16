@@ -1,9 +1,12 @@
 managed implementation in class ZBP_I_TRAVEL_MG_FS01 unique;
 strict ( 2 );
+with draft;
 
 define behavior for ZI_TRAVEL_MG_FS01 alias Travel
 persistent table ztravel_mg_fs01
+draft table zdtravel_mg_fs01
 lock master
+total etag LastChangedAt
 authorization master ( global )
 etag master LocalLastChangedAt
 {
@@ -14,6 +17,12 @@ etag master LocalLastChangedAt
   create;
   update;
   delete;
+
+  draft action Resume;
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft determine action Prepare;
 
   mapping for ztravel_mg_fs01 corresponding
     {

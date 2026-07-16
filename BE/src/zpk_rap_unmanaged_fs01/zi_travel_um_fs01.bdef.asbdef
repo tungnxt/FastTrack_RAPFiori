@@ -1,5 +1,9 @@
 unmanaged implementation in class ZBP_I_TRAVEL_UM_FS01 unique;
 strict ( 2 );
+// LUU Y (Buoi5): 'with draft' KHONG dung duoc cho unmanaged implementation.
+// Draft chi ho tro cho: managed, managed+additional save, managed+unmanaged save.
+// => Tren OData V4 UI, BO nay KHONG create/edit duoc trong Fiori Elements (thieu draft).
+//    Muon CRUD BO unmanaged nay tren UI -> phai dung Service Binding OData V2 - UI.
 
 define behavior for ZI_TRAVEL_UM_FS01 alias Travel
 lock master
