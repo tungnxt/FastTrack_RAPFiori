@@ -1,0 +1,6 @@
+extend service ZSV_BOOKING with {
+  expose ZI_TRAVEL_MG_FS01 as ZZTravelMG;
+  expose ZI_TRAVEL_AS_FS01 as ZZTravelAS;
+  expose ZI_TRAVEL_US_FS01 as ZZTravelUS;
+  expose ZI_TRAVEL_UM_FS01 as ZZTravelUM;
+}

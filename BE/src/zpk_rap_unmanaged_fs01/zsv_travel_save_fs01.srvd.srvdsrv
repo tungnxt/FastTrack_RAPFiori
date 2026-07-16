@@ -1,6 +1,0 @@
-define service ZSV_TRAVEL_SAVE_FS01 {
-  expose ZI_TRAVEL_MG_FS01 as TravelMG;
-  expose ZI_TRAVEL_AS_FS01 as TravelAS;
-  expose ZI_TRAVEL_US_FS01 as TravelUS;
-  expose ZI_TRAVEL_UM_FS01 as TravelUM;
-}
