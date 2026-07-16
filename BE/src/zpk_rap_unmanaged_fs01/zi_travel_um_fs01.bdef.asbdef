@@ -1,4 +1,4 @@
-﻿unmanaged implementation in class ZBP_I_TRAVEL_UM_FS01 unique;
+unmanaged implementation in class ZBP_I_TRAVEL_UM_FS01 unique;
 strict ( 2 );
 
 define behavior for ZI_TRAVEL_UM_FS01 alias Travel

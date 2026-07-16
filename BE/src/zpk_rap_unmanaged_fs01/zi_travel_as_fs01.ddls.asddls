@@ -1,4 +1,3 @@
-﻿@AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Travel Additional Save - Interface View'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{ serviceQuality: #X, sizeCategory: #S, dataClass: #MIXED }

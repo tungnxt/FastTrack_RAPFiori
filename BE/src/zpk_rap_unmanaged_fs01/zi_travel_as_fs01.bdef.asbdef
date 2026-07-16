@@ -1,4 +1,4 @@
-﻿managed implementation in class ZBP_I_TRAVEL_AS_FS01 unique;
+managed implementation in class ZBP_I_TRAVEL_AS_FS01 unique;
 strict ( 2 );
 
 define behavior for ZI_TRAVEL_AS_FS01 alias Travel
@@ -17,20 +17,20 @@ with additional save
   delete;
 
   mapping for ztravel_as_fs01 corresponding
-  {
-    TravelId      = TRAVEL_ID;
-    AgencyId      = AGENCY_ID;
-    CustomerId    = CUSTOMER_ID;
-    BeginDate     = BEGIN_DATE;
-    EndDate       = END_DATE;
-    Description   = DESCRIPTION;
-    TotalPrice    = TOTAL_PRICE;
-    CurrencyCode  = CURRENCY_CODE;
-    OverallStatus = OVERALL_STATUS;
-    CreatedBy          = CREATED_BY;
-    CreatedAt          = CREATED_AT;
-    LastChangedBy      = LAST_CHANGED_BY;
-    LastChangedAt      = LAST_CHANGED_AT;
-    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
-  }
+    {
+      TravelId           = TRAVEL_ID;
+      AgencyId           = AGENCY_ID;
+      CustomerId         = CUSTOMER_ID;
+      BeginDate          = BEGIN_DATE;
+      EndDate            = END_DATE;
+      Description        = DESCRIPTION;
+      TotalPrice         = TOTAL_PRICE;
+      CurrencyCode       = CURRENCY_CODE;
+      OverallStatus      = OVERALL_STATUS;
+      CreatedBy          = CREATED_BY;
+      CreatedAt          = CREATED_AT;
+      LastChangedBy      = LAST_CHANGED_BY;
+      LastChangedAt      = LAST_CHANGED_AT;
+      LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+    }
 }

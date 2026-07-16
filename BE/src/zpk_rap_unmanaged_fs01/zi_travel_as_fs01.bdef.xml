@@ -26,12 +26,6 @@
       <TYPE>text/html</TYPE>
       <TITLE>Source Content (HTML)</TITLE>
      </item>
-     <item>
-      <HREF>/sap/bc/adt/vit/wb/object_type/bdefbdo/object_name/ZI_TRAVEL_AS_FS01</HREF>
-      <REL>self</REL>
-      <TYPE>application/vnd.sap.sapgui</TYPE>
-      <TITLE>Representation in SAP GUI</TITLE>
-     </item>
     </LINKS>
     <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
     <ABAP_LANGU_VERSION>5</ABAP_LANGU_VERSION>

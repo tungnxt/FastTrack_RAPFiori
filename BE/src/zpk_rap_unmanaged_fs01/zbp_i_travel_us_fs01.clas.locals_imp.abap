@@ -1,24 +1,26 @@
-﻿*"* local helper classes for UNMANAGED SAVE
-
-"=====================================================================
-" UNMANAGED SAVE (with unmanaged save)
-"   - Framework KHONG tu luu -> save_modified chiu trach nhiem 100%.
-"   - (a) Persist bang chinh ZTRAVEL_US_FS01 bang tay.
-"   - (b) Goi sang BO MANAGED (ZI_TRAVEL_MG_FS01) qua EML de xu ly luon
-"         -> minh hoa "wrap/delegate mot managed BO trong save_modified"
-"            (dung y tuong RAP610, nhung goi BO managed noi bo thay vi released API).
-"   QUY TAC VANG: EML/COMMIT chi o day, KHONG o handler interaction.
-"=====================================================================
-CLASS lsc_travel_us DEFINITION INHERITING FROM cl_abap_behavior_saver.
-  PROTECTED SECTION.
-    METHODS save_modified REDEFINITION.
+CLASS lhc_Travel DEFINITION INHERITING FROM cl_abap_behavior_handler.
+  PRIVATE SECTION.
+    METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
+      IMPORTING REQUEST requested_authorizations FOR Travel RESULT result.
 ENDCLASS.
 
-CLASS lsc_travel_us IMPLEMENTATION.
-  METHOD save_modified.
+CLASS lhc_Travel IMPLEMENTATION.
+  METHOD get_global_authorizations.
+  ENDMETHOD.
+ENDCLASS.
 
-    "---------- (a) TU PERSIST BANG CHINH ----------
-    " CREATE -> INSERT
+CLASS lsc_ZI_TRAVEL_US_FS01 DEFINITION INHERITING FROM cl_abap_behavior_saver.
+  PROTECTED SECTION.
+    METHODS save_modified   REDEFINITION.
+    METHODS cleanup_finalize REDEFINITION.
+ENDCLASS.
+
+CLASS lsc_ZI_TRAVEL_US_FS01 IMPLEMENTATION.
+  METHOD save_modified.
+*    DATA(lv_now) = utclong_current( ).    " admin fields kieu UTCLONG
+    GET TIME STAMP FIELD DATA(lv_now).
+
+    " (a) 'with unmanaged save' -> framework KHONG tu luu, ta tu persist.
     IF create-travel IS NOT INITIAL.
       DATA lt_ins TYPE STANDARD TABLE OF ztravel_us_fs01.
       lt_ins = VALUE #( FOR c IN create-travel
@@ -32,14 +34,13 @@ CLASS lsc_travel_us IMPLEMENTATION.
           currency_code  = c-CurrencyCode
           overall_status = c-OverallStatus
           created_by            = sy-uname
-          created_at            = utclong_current( )
+          created_at            = lv_now
           last_changed_by       = sy-uname
-          last_changed_at       = utclong_current( )
-          local_last_changed_at = utclong_current( ) ) ).
+          last_changed_at       = lv_now
+          local_last_changed_at = lv_now ) ).
       INSERT ztravel_us_fs01 FROM TABLE @lt_ins.
     ENDIF.
 
-    " UPDATE -> UPDATE
     LOOP AT update-travel INTO DATA(u).
       UPDATE ztravel_us_fs01
         SET agency_id      = @u-AgencyId,
@@ -51,18 +52,16 @@ CLASS lsc_travel_us IMPLEMENTATION.
             currency_code  = @u-CurrencyCode,
             overall_status = @u-OverallStatus,
             last_changed_by       = @sy-uname,
-            last_changed_at       = @( utclong_current( ) ),
-            local_last_changed_at = @( utclong_current( ) )
+            last_changed_at       = @lv_now,
+            local_last_changed_at = @lv_now
         WHERE travel_id = @u-TravelId.
     ENDLOOP.
 
-    " DELETE -> DELETE
     LOOP AT delete-travel INTO DATA(d).
       DELETE FROM ztravel_us_fs01 WHERE travel_id = @d-TravelId.
     ENDLOOP.
 
-    "---------- (b) DELEGATE sang BO MANAGED qua EML ----------
-    " Voi moi Travel moi tao -> tao 1 ban ghi tuong ung ben BO managed.
+    " (b) DELEGATE sang BO MANAGED qua EML (thay cho Released API).
     IF create-travel IS NOT INITIAL.
       MODIFY ENTITIES OF zi_travel_mg_fs01
         ENTITY Travel
@@ -81,8 +80,10 @@ CLASS lsc_travel_us IMPLEMENTATION.
             OverallStatus  = c2-OverallStatus ) )
         MAPPED   DATA(mapped)
         FAILED   DATA(failed)
-        REPORTED DATA(reported).
+        REPORTED DATA(lt_reported).
     ENDIF.
+  ENDMETHOD.
 
+  METHOD cleanup_finalize.
   ENDMETHOD.
 ENDCLASS.

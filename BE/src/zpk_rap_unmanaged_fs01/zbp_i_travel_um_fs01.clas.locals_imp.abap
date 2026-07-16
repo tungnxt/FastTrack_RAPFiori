@@ -1,30 +1,26 @@
-﻿*"* local helper classes for UNMANAGED implementation
-
-"=====================================================================
-" UNMANAGED
-"   - Developer viet TAT CA: create/update/delete/read/lock + save.
-"   - Handler (interaction) CHI don thay doi vao buffer noi bo (mt_*),
-"     TUYET DOI khong ghi DB o day.
-"   - Saver.save_modified moi la noi ghi DB that su.
-"=====================================================================
-CLASS lhc_travel DEFINITION INHERITING FROM cl_abap_behavior_handler.
+CLASS lhc_Travel DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PUBLIC SECTION.
-    " buffer dung chung giua handler va saver
+    " buffer dung chung giua handler (interaction) va saver (save)
     CLASS-DATA mt_create TYPE STANDARD TABLE OF ztravel_um_fs01 WITH EMPTY KEY.
     CLASS-DATA mt_update TYPE STANDARD TABLE OF ztravel_um_fs01 WITH EMPTY KEY.
     CLASS-DATA mt_delete TYPE STANDARD TABLE OF ztravel_um_fs01 WITH EMPTY KEY.
 
   PRIVATE SECTION.
-    METHODS create        FOR MODIFY IMPORTING entities FOR CREATE Travel.
-    METHODS update        FOR MODIFY IMPORTING entities FOR UPDATE Travel.
-    METHODS delete        FOR MODIFY IMPORTING keys     FOR DELETE Travel.
-    METHODS read          FOR READ   IMPORTING keys     FOR READ   Travel RESULT result.
-    METHODS lock          FOR LOCK   IMPORTING keys     FOR LOCK   Travel.
+    METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
+      IMPORTING REQUEST requested_authorizations FOR Travel RESULT result.
+    METHODS create FOR MODIFY IMPORTING entities FOR CREATE Travel.
+    METHODS update FOR MODIFY IMPORTING entities FOR UPDATE Travel.
+    METHODS delete FOR MODIFY IMPORTING keys     FOR DELETE Travel.
+    METHODS read   FOR READ   IMPORTING keys     FOR READ   Travel RESULT result.
+    METHODS lock   FOR LOCK   IMPORTING keys     FOR LOCK   Travel.
 ENDCLASS.
 
-CLASS lhc_travel IMPLEMENTATION.
+CLASS lhc_Travel IMPLEMENTATION.
+  METHOD get_global_authorizations.
+  ENDMETHOD.
 
-  METHOD create.
+  METHOD create..
+    GET TIME STAMP FIELD DATA(lv_now).
     LOOP AT entities INTO DATA(e).
       APPEND VALUE #( travel_id      = e-TravelId
                       agency_id      = e-AgencyId
@@ -36,15 +32,16 @@ CLASS lhc_travel IMPLEMENTATION.
                       currency_code  = e-CurrencyCode
                       overall_status = e-OverallStatus
                       created_by            = sy-uname
-                      created_at            = utclong_current( )
+                      created_at            = lv_now
                       last_changed_by       = sy-uname
-                      last_changed_at       = utclong_current( )
-                      local_last_changed_at = utclong_current( ) ) TO mt_create.
+                      last_changed_at       = lv_now
+                      local_last_changed_at = lv_now ) TO mt_create.
       APPEND VALUE #( %cid = e-%cid TravelId = e-TravelId ) TO mapped-travel.
     ENDLOOP.
   ENDMETHOD.
 
   METHOD update.
+    GET TIME STAMP FIELD DATA(lv_now).
     LOOP AT entities INTO DATA(e).
       APPEND VALUE #( travel_id      = e-TravelId
                       agency_id      = e-AgencyId
@@ -56,8 +53,8 @@ CLASS lhc_travel IMPLEMENTATION.
                       currency_code  = e-CurrencyCode
                       overall_status = e-OverallStatus
                       last_changed_by       = sy-uname
-                      last_changed_at       = utclong_current( )
-                      local_last_changed_at = utclong_current( ) ) TO mt_update.
+                      last_changed_at       = lv_now
+                      local_last_changed_at = lv_now ) TO mt_update.
     ENDLOOP.
   ENDMETHOD.
 
@@ -90,30 +87,54 @@ CLASS lhc_travel IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD lock.
-    " Trong thuc te: goi ENQUEUE tu 1 lock object.
-    " Demo giu don gian de tap trung vao save sequence.
     RETURN.
   ENDMETHOD.
-
 ENDCLASS.
 
-CLASS lsc_travel_um DEFINITION INHERITING FROM cl_abap_behavior_saver.
+CLASS lsc_ZI_TRAVEL_UM_FS01 DEFINITION INHERITING FROM cl_abap_behavior_saver.
   PROTECTED SECTION.
-    METHODS save_modified REDEFINITION.
-    METHODS cleanup_finalize REDEFINITION.
+    METHODS finalize          REDEFINITION.
+    METHODS check_before_save REDEFINITION.
+    METHODS save              REDEFINITION.   " <-- unmanaged ghi DB o day
+    METHODS cleanup           REDEFINITION.
+    METHODS cleanup_finalize  REDEFINITION.
 ENDCLASS.
 
-CLASS lsc_travel_um IMPLEMENTATION.
-  METHOD save_modified.
-    IF lhc_travel=>mt_create IS NOT INITIAL.
-      INSERT ztravel_um_fs01 FROM TABLE @lhc_travel=>mt_create.
+CLASS lsc_ZI_TRAVEL_UM_FS01 IMPLEMENTATION.
+  METHOD finalize.
+  ENDMETHOD.
+
+  METHOD check_before_save.
+  ENDMETHOD.
+
+  METHOD save.
+    IF lhc_Travel=>mt_create IS NOT INITIAL.
+      INSERT ztravel_um_fs01 FROM TABLE @lhc_Travel=>mt_create.
     ENDIF.
-    LOOP AT lhc_travel=>mt_update INTO DATA(u).
-      " SET tung field -> KHONG ghi de created_by/created_at
+    LOOP AT lhc_Travel=>mt_update INTO DATA(u).
       UPDATE ztravel_um_fs01
         SET agency_id      = @u-agency_id,
             customer_id    = @u-customer_id,
             begin_date     = @u-begin_date,
             end_date       = @u-end_date,
             description    = @u-description,
-            t
+            total_price    = @u-total_price,
+            currency_code  = @u-currency_code,
+            overall_status = @u-overall_status,
+            last_changed_by       = @u-last_changed_by,
+            last_changed_at       = @u-last_changed_at,
+            local_last_changed_at = @u-local_last_changed_at
+        WHERE travel_id = @u-travel_id.
+    ENDLOOP.
+    LOOP AT lhc_Travel=>mt_delete INTO DATA(d).
+      DELETE FROM ztravel_um_fs01 WHERE travel_id = @d-travel_id.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD cleanup.
+  ENDMETHOD.
+
+  METHOD cleanup_finalize.
+    CLEAR: lhc_Travel=>mt_create, lhc_Travel=>mt_update, lhc_Travel=>mt_delete.
+  ENDMETHOD.
+ENDCLASS.
